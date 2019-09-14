@@ -1,0 +1,37 @@
+name: NPM Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/npm@master
+    - with:
+        args: install
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/npm@master
+    - with:
+        args: test
+  tag:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/bin/filter@master
+    - with:
+        args: "tag"
+  publish:
+    needs: tag
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/npm@master
+    - with:
+        args: "publish --access public"
+      env:
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
