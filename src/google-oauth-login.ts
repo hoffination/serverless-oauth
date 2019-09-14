@@ -1,4 +1,4 @@
-import { google } from 'googleapis';
+import { google, plus_v1 } from 'googleapis';
 const OAuth2 = google.auth.OAuth2;
 const plus = google.plus('v1');
 
@@ -15,7 +15,7 @@ export type GoogleConfig = {
 };
 
 export type LOGIN_RESPONSE = {
-  googleResponse: any;
+  googleResponse: plus_v1.Schema$Person;
 };
 
 export const OAuth2Login = (
@@ -30,7 +30,7 @@ export const OAuth2Login = (
       oauth2Client.setCredentials(tokens);
       try {
         const googleResponse = await plus.people.get({ ...plusParams, auth: oauth2Client });
-        resolve({ googleResponse });
+        resolve({ googleResponse: googleResponse.data });
       } catch (err) {
         console.error(err);
         return reject(GOOGLE_OAUTH_ERRORS.PLUS_REQ_ERR);
