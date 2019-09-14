@@ -19,7 +19,11 @@ export const createSendToken = (payload: USER_PAYLOAD, secret: string): string =
 };
 
 // Validate authentication from response
-export const checkAuth = (authHeader: string, secret: string, userId?: string): Promise<void> => {
+export const checkAuth = (
+  authHeader: string,
+  secret: string,
+  userId?: string,
+): Promise<USER_PAYLOAD> => {
   return new Promise((resolve, reject) => {
     if (!authHeader || authHeader.length === 0) {
       return reject(ERROR_TYPES.NOT_AUTHENTICATED);
@@ -37,7 +41,7 @@ export const checkAuth = (authHeader: string, secret: string, userId?: string): 
         if (userId && (decoded as USER_PAYLOAD).userId !== userId) {
           return reject(ERROR_TYPES.INCORRECT_USER);
         }
-        resolve();
+        resolve(decoded as USER_PAYLOAD);
       });
     } catch (err) {
       console.error(err);

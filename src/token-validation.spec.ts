@@ -12,9 +12,14 @@ describe('token validation', () => {
   });
 
   describe('checkAuth', () => {
-    it('should check the authentication token', () => {
+    it('should check the authentication token and return decoded', () => {
       const token = jwt.sign({ userId: 'john' }, 'test');
-      return checkAuth(`Bearer ${token}`, 'test').then(() => {}, () => fail());
+      return checkAuth(`Bearer ${token}`, 'test').then(
+        decoded => {
+          expect(decoded.userId).toEqual('john');
+        },
+        () => fail(),
+      );
     });
 
     it('should error if authentication header missing', () => {
