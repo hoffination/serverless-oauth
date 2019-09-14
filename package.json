@@ -1,0 +1,26 @@
+{
+  "name": "serverless-oauth",
+  "version": "0.1.0",
+  "description": "Helper Functions for Serverless Google OAuth 2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "prepublishOnly": "tsc"
+  },
+  "author": "Ben Hofferber",
+  "license": "MIT",
+  "dependencies": {
+    "googleapis": "^43.0.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/jsonwebtoken": "^8.3.3",
+    "jest": "^24.9.0",
+    "testdouble": "^3.12.4",
+    "testdouble-jest": "^2.0.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
+  }
+}
