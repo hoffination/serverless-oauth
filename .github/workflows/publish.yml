@@ -20,7 +20,7 @@ jobs:
       run: |
         npm install
         npm test
-        npm prepublishOnly
+        npm run prepublishOnly
     - name: Tag
       uses: actions/bin/filter@master
       with:
