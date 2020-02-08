@@ -1,6 +1,6 @@
-import { google, plus_v1 } from 'googleapis';
+import { google, people_v1 } from 'googleapis';
 const OAuth2 = google.auth.OAuth2;
-const plus = google.plus('v1');
+const people = google.people('v1');
 
 export enum GOOGLE_OAUTH_ERRORS {
   TOKEN_REQ_ERR = 'TOKEN_REQ_ERR',
@@ -11,16 +11,16 @@ export type GoogleConfig = {
   clientId: string;
   secret: string;
   redirect: string;
-  plusParams: any;
+  peopleParams: people_v1.Params$Resource$People$Get;
 };
 
 export type LOGIN_RESPONSE = {
-  googleResponse: plus_v1.Schema$Person;
+  googleResponse: people_v1.Schema$Person;
 };
 
 export const OAuth2Login = (
   token: string,
-  { clientId, redirect, secret, plusParams = { userId: 'me' } }: GoogleConfig,
+  { clientId, redirect, secret, peopleParams = { resourceName: 'people/me' } }: GoogleConfig,
 ): Promise<LOGIN_RESPONSE> => {
   console.debug('Google OAuth Login');
   return new Promise(async (resolve, reject) => {
@@ -29,7 +29,10 @@ export const OAuth2Login = (
       const { tokens } = await oauth2Client.getToken(token);
       oauth2Client.setCredentials(tokens);
       try {
-        const googleResponse = await plus.people.get({ ...plusParams, auth: oauth2Client });
+        const googleResponse = await people.people.get({
+          ...peopleParams,
+          auth: oauth2Client,
+        });
         resolve({ googleResponse: googleResponse.data });
       } catch (err) {
         console.error(err);
