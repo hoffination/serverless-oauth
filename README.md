@@ -37,14 +37,20 @@ const responseTemplate = {
 // Serverless Post Request
 module.exports.login = (event, context, callback) => {
   event.body = JSON.parse(event.body);
-  OAuth2Login(event.body.code, { clientId, redirect, secret: googleSecret }).then(
+  OAuth2Login(event.body.code, {
+    clientId,
+    redirect,
+    secret: googleSecret,
+    peopleParams: { resourceName: 'people/me', personFields: 'names,photos' },
+  }).then(
     ({ googleResponse }) => {
-      dao.checkForUser(googleResponse.id).then(
+      const userId = googleResponse.resourceName.split('/')[1];
+      dao.checkForUser(userId).then(
         user => {
           const payload = {
-            name: googleResponse.displayName,
-            image: googleResponse.image ? googleResponse.image.url : undefined,
-            userId: googleResponse.id,
+            name: googleResponse.names[0].displayName,
+            image: googleResponse.photos.length > 0 ? googleResponse.photos[0].url : undefined,
+            userId,
           };
 
           // User exists, proceed to login
