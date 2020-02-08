@@ -1,6 +1,6 @@
 {
   "name": "serverless-oauth",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Helper Functions for Serverless Google OAuth 2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
